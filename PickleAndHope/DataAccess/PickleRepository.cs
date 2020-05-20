@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using PickleAndHope.Models;
 
 namespace PickleAndHope.DataAccess
@@ -11,7 +12,12 @@ namespace PickleAndHope.DataAccess
     public class PickleRepository
     {
 
-        const string ConnectionString = "Server = localhost; Database = PickleAndHope; Trusted_Connection = True;";
+        string ConnectionString;
+
+        public PickleRepository(IConfiguration config)
+        {
+            ConnectionString = config.GetConnectionString("PickleAndHope");
+        }
 
         public Pickle Add(Pickle pickle)
         {

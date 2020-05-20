@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using PickleAndHope.DataAccess;
 
 namespace PickleAndHope
 {
@@ -26,6 +27,11 @@ namespace PickleAndHope
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddTransient<PickleRepository>(); // shortest lifespan; only exists as long as the class that needs it
+            // services.AddScoped<>(); // around for entire request but no longer; could run into trouble of some kind
+            services.AddSingleton<IConfiguration>(Configuration); // while the app is running, only create one of these, and share it around wherever it is needed
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
